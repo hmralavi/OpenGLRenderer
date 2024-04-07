@@ -47,7 +47,7 @@ jobs:
 
     - name: Test with unittest
       run: |
-        export QT_QPA_PLATFORM=offscreen
+        sudo apt-get install libxcb-xinerama0
         python -m unittest discover tests
 
     - name: Build and deploy to PyPI
