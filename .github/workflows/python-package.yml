@@ -48,7 +48,7 @@ jobs:
     - name: Test with unittest
       run: |
         sudo apt-get install libxcb-xinerama0
-        export QT_QPA_PLATFORM=linuxfb
+        export QT_QPA_PLATFORM=xcb
         python -m unittest discover tests
 
     - name: Build and deploy to PyPI
