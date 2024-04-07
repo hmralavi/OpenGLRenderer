@@ -47,6 +47,7 @@ jobs:
 
     - name: Test with unittest
       run: |
+        export QT_QPA_PLATFORM=offscreen
         python -m unittest discover tests
 
     - name: Build and deploy to PyPI
