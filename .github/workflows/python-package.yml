@@ -47,10 +47,7 @@ jobs:
 
     - name: Test with unittest
       run: |
-        sudo apt-get install libxcb-xinerama0
-        pip uninstall opencv-python
-        pip install opencv-python-headless
-        export QT_QPA_PLATFORM=offscreen
+        sudo apt install libxcb-* 
         python -m unittest discover tests
 
     - name: Build and deploy to PyPI
