@@ -1,2 +1,2 @@
 # OpenGLRenderer
-An OpenGL Rendering Package
+A package for rendering 3D objects using OpenGL.
