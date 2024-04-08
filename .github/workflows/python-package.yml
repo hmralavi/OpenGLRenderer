@@ -4,19 +4,20 @@
 name: Python package
 
 on:
-  push:
-    branches:
-      - main
-      - development
-  pull_request:
-    branches:
-      - main
-      - development
+  # push:
+  #   branches:
+  #     - main
+  #     - development
+  # pull_request:
+  #   branches:
+  #     - main
+  #     - development
+  workflow_dispatch:
 
 jobs:
   build:
 
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     strategy:
       fail-fast: true
@@ -25,10 +26,10 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
 
@@ -45,16 +46,16 @@ jobs:
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics 
 
-    - name: Test with unittest
-      run: |
-        python -m unittest discover tests
-
-    # - name: Build and deploy to PyPI
-    #   if: success() && github.ref == 'refs/heads/main' && github.event_name == 'push'
+    # - name: Test with unittest
     #   run: |
-    #     pip install setuptools wheel twine
-    #     python setup.py sdist bdist_wheel
-    #     twine upload --repository pypi dist/*
-    #   env:
-    #     TWINE_USERNAME: __token__
-    #     TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+    #     python -m unittest discover tests
+
+    - name: Build and deploy to PyPI
+      if: success() && github.ref == 'refs/heads/main'
+      run: |
+        pip install setuptools wheel twine
+        python setup.py sdist bdist_wheel
+        twine upload --repository pypi dist/*
+      env:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
