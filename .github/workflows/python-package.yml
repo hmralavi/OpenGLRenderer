@@ -16,14 +16,7 @@ on:
 jobs:
   build:
 
-    env:
-      DISPLAY: :0
-
-    defaults:    
-      run:
-        shell: bash -l {0}
-
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     strategy:
       fail-fast: true
@@ -33,20 +26,11 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-      
-    - name: Setup OpenGL              
-      uses: openrndr/setup-opengl@v1.1
-    - run: xvfb-run glxinfo
 
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-
-    - name: Prepare Linux
-      run: |
-        sudo apt-get install -y xvfb x11-xserver-utils
-        sudo /usr/bin/Xvfb $DISPLAY -screen 0 1280x1024x24  & 
 
     - name: Install dependencies
       run: |
