@@ -16,7 +16,14 @@ on:
 jobs:
   build:
 
-    runs-on: windows-latest
+    env:
+      DISPLAY: :0
+
+    defaults:    
+      run:
+        shell: bash -l {0}
+
+    runs-on: ubuntu-latest
 
     strategy:
       fail-fast: true
@@ -32,17 +39,10 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Install 7zip
-      run: choco install 7zip.install
-      
-    - name: Install Mesa
-      shell: cmd
+    - name: Prepare Linux
       run: |
-        curl.exe -L --output mesa.7z --url https://github.com/pal1000/mesa-dist-win/releases/download/20.3.2/mesa3d-20.3.2-release-msvc.7z
-        "C:\Program Files\7-Zip\7z.exe" x mesa.7z
-        mklink opengl32.dll "x64\opengl32.dll"
-        mklink libglapi.dll "x64\libglapi.dll"
-      working-directory: build\tests\Debug
+        sudo apt-get install -y xvfb x11-xserver-utils
+        sudo /usr/bin/Xvfb $DISPLAY -screen 0 1280x1024x24  & 
 
     - name: Install dependencies
       run: |
